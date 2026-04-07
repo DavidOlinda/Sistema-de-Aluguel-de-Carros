@@ -36,6 +36,7 @@ Responsável por:
 * **Cliente (Usuário Individual)**
 * **Agente (Empresas e Bancos)**
 * **Sistema Central**
+* **Administrador**
 
 ---
 
