@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Novo Cliente</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin-top: 10px; }
+        input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+        button, a { margin-top: 16px; display: inline-block; padding: 8px 12px; text-decoration: none; color: white; border-radius: 3px; }
+        button { background: #28a745; border: none; }
+        a { background: #6c757d; }
+    </style>
+</head>
+<body>
+<h1>Cadastrar Cliente</h1>
+
+<form action="/clientes" method="post">
+    <label>Nome:<input type="text" name="nome" value="" required /></label>
+    <label>CPF:<input type="text" name="cpf" value="" required /></label>
+    <label>RG:<input type="text" name="rg" value="" required /></label>
+    <label>Endereço:<input type="text" name="endereco" value="" required /></label>
+    <label>Profissão:<input type="text" name="profissao" value="" /></label>
+    <h3>Rendimentos</h3>
+    <label>Entidade 1:<input type="text" name="renda1Entidade" value="" /></label>
+    <label>Valor 1:<input type="number" step="0.01" name="renda1Valor" value="" /></label>
+    <label>Entidade 2:<input type="text" name="renda2Entidade" value="" /></label>
+    <label>Valor 2:<input type="number" step="0.01" name="renda2Valor" value="" /></label>
+    <label>Entidade 3:<input type="text" name="renda3Entidade" value="" /></label>
+    <label>Valor 3:<input type="number" step="0.01" name="renda3Valor" value="" /></label>
+
+    <button type="submit">Salvar</button>
+    <a href="/clientes">Voltar</a>
+</form>
+</body>
+</html>

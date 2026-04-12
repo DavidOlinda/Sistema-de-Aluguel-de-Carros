@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Editar Cliente</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin-top: 10px; }
+        input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+        button, a { margin-top: 16px; display: inline-block; padding: 8px 12px; text-decoration: none; color: white; border-radius: 3px; }
+        button { background: #007bff; border: none; }
+        a { background: #6c757d; }
+    </style>
+</head>
+<body>
+<h1>Editar Cliente</h1>
+
+<form th:action="@{/clientes/{id}(id=${cliente.id})}" method="post">
+    <label>Nome:<input type="text" name="nome" th:value="${cliente.nome}" required /></label>
+    <label>CPF:<input type="text" name="cpf" th:value="${cliente.cpf}" required /></label>
+    <label>RG:<input type="text" name="rg" th:value="${cliente.rg}" required /></label>
+    <label>Endereço:<input type="text" name="endereco" th:value="${cliente.endereco}" required /></label>
+    <label>Profissão:<input type="text" name="profissao" th:value="${cliente.profissao}" /></label>
+    <h3>Rendimentos</h3>
+    <label>Entidade 1:<input type="text" name="renda1Entidade" th:value="${cliente.renda1Entidade}" /></label>
+    <label>Valor 1:<input type="number" step="0.01" name="renda1Valor" th:value="${cliente.renda1Valor}" /></label>
+    <label>Entidade 2:<input type="text" name="renda2Entidade" th:value="${cliente.renda2Entidade}" /></label>
+    <label>Valor 2:<input type="number" step="0.01" name="renda2Valor" th:value="${cliente.renda2Valor}" /></label>
+    <label>Entidade 3:<input type="text" name="renda3Entidade" th:value="${cliente.renda3Entidade}" /></label>
+    <label>Valor 3:<input type="number" step="0.01" name="renda3Valor" th:value="${cliente.renda3Valor}" /></label>
+
+    <button type="submit">Atualizar</button>
+    <a href="/clientes">Voltar</a>
+</form>
+</body>
+</html>

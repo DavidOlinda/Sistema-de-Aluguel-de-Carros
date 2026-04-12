@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Clientes</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background: #f2f2f2; }
+        a.button { display: inline-block; margin-right: 10px; padding: 8px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 3px; }
+        a.button.delete { background: #dc3545; }
+        form.inline { display: inline-block; margin: 0
+    </style>
+</head>
+<body>
+<h1>Cadastro de Clientes</h1>
+
+<form action="/clientes" method="get">
+    <label>Buscar por nome:</label>
+    <input type="text" name="busca" value="[[${busca}]]" />
+    <button type="submit">Pesquisar</button>
+    <a class="button" href="/clientes/create">Novo cliente</a>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>RG</th>
+            <th>Profissão</th>
+            <th>Endereço</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <th:block th:each="cliente : ${clientes}">
+            <tr>
+                <td th:text="${cliente.nome}">Nome</td>
+                <td th:text="${cliente.cpf}">CPF</td>
+                <td th:text="${cliente.rg}">RG</td>
+                <td th:text="${cliente.profissao}">Profissão</td>
+                <td th:text="${cliente.endereco}">Endereço</td>
+                <td>
+                    <a class="button" th:href="@{/clientes/{id}(id=${cliente.id})}">Ver</a>
+                    <a class="button" th:href="@{/clientes/{id}/edit(id=${cliente.id})}">Editar</a>
+                    <a class="button delete" th:href="@{/clientes/{id}/delete(id=${cliente.id})}" onclick="return confirm('Remover cliente?');">Excluir</a>
+                </td>
+            </tr>
+        </th:block>
+    </tbody>
+</table>
+</body>
+</html>

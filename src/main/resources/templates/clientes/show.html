@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cliente</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        dl { max-width: 700px; }
+        dt { font-weight: bold; margin-top: 10px; }
+        dd { margin-left: 0; margin-bottom: 10px; }
+        a { display: inline-block; margin-top: 16px; padding: 8px 12px; background: #6c757d; color: white; text-decoration: none; border-radius: 3px; }
+    </style>
+</head>
+<body>
+<h1>Cliente</h1>
+<dl>
+    <dt>Nome</dt>
+    <dd th:text="${cliente.nome}">Nome</dd>
+    <dt>CPF</dt>
+    <dd th:text="${cliente.cpf}">CPF</dd>
+    <dt>RG</dt>
+    <dd th:text="${cliente.rg}">RG</dd>
+    <dt>Endereço</dt>
+    <dd th:text="${cliente.endereco}">Endereço</dd>
+    <dt>Profissão</dt>
+    <dd th:text="${cliente.profissao}">Profissão</dd>
+    <dt>Entidade 1</dt>
+    <dd th:text="${cliente.renda1Entidade}">Entidade 1</dd>
+    <dt>Valor 1</dt>
+    <dd th:text="${cliente.renda1Valor}">Valor 1</dd>
+    <dt>Entidade 2</dt>
+    <dd th:text="${cliente.renda2Entidade}">Entidade 2</dd>
+    <dt>Valor 2</dt>
+    <dd th:text="${cliente.renda2Valor}">Valor 2</dd>
+    <dt>Entidade 3</dt>
+    <dd th:text="${cliente.renda3Entidade}">Entidade 3</dd>
+    <dt>Valor 3</dt>
+    <dd th:text="${cliente.renda3Valor}">Valor 3</dd>
+</dl>
+
+<a href="/clientes">Voltar</a>
+</body>
+</html>
