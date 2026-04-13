@@ -8,8 +8,8 @@
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
         th { background: #f2f2f2; }
-        a.button { display: inline-block; margin-right: 10px; padding: 8px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 3px; }
-        a.button.delete { background: #dc3545; }
+        button.action { display: inline-block; margin-right: 10px; padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: inherit; }
+        button.delete { background: #dc3545; }
         form.inline { display: inline-block; margin: 0
     </style>
 </head>
@@ -18,9 +18,9 @@
 
 <form action="/clientes" method="get">
     <label>Buscar por nome:</label>
-    <input type="text" name="busca" value="[[${busca}]]" />
+    <input type="text" name="busca" th:value="${busca}" />
     <button type="submit">Pesquisar</button>
-    <a class="button" href="/clientes/create">Novo cliente</a>
+    <button type="button" class="action" onclick="window.location='/clientes/create'">Novo cliente</button>
 </form>
 
 <table>
@@ -43,13 +43,20 @@
                 <td th:text="${cliente.profissao}">Profissão</td>
                 <td th:text="${cliente.endereco}">Endereço</td>
                 <td>
-                    <a class="button" th:href="@{/clientes/{id}(id=${cliente.id})}">Ver</a>
-                    <a class="button" th:href="@{/clientes/{id}/edit(id=${cliente.id})}">Editar</a>
-                    <a class="button delete" th:href="@{/clientes/{id}/delete(id=${cliente.id})}" onclick="return confirm('Remover cliente?');">Excluir</a>
+                    <button class="action" th:onclick="'window.location=\'/clientes/' + ${cliente.id} + '\''">Ver</button>
+                    <button class="action" th:onclick="'window.location=\'/clientes/' + ${cliente.id} + '/edit\''">Editar</button>
+                    <button class="action delete" th:onclick="'excluir(' + ${cliente.id} + ')'">Excluir</button>
                 </td>
             </tr>
         </th:block>
     </tbody>
 </table>
+<script>
+    function excluir(id) {
+        if (!confirm('Remover cliente?')) return;
+        fetch('/clientes/' + id, { method: 'DELETE' })
+            .then(() => window.location.reload());
+    }
+</script>
 </body>
 </html>

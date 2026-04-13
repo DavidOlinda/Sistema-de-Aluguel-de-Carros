@@ -7,30 +7,48 @@
         body { font-family: Arial, sans-serif; margin: 20px; }
         label { display: block; margin-top: 10px; }
         input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
-        button, a { margin-top: 16px; display: inline-block; padding: 8px 12px; text-decoration: none; color: white; border-radius: 3px; }
-        button { background: #28a745; border: none; }
-        a { background: #6c757d; }
+        button { margin-top: 16px; display: inline-block; padding: 8px 12px; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button[type=submit] { background: #28a745; }
+        button.secondary { background: #6c757d; }
     </style>
 </head>
 <body>
 <h1>Cadastrar Cliente</h1>
 
-<form action="/clientes" method="post">
-    <label>Nome:<input type="text" name="nome" value="" required /></label>
-    <label>CPF:<input type="text" name="cpf" value="" required /></label>
-    <label>RG:<input type="text" name="rg" value="" required /></label>
-    <label>Endereço:<input type="text" name="endereco" value="" required /></label>
-    <label>Profissão:<input type="text" name="profissao" value="" /></label>
+<form id="form">
+    <label>Nome:<input type="text" name="nome" required /></label>
+    <label>CPF:<input type="text" name="cpf" required /></label>
+    <label>RG:<input type="text" name="rg" required /></label>
+    <label>Endereço:<input type="text" name="endereco" /></label>
+    <label>Profissão:<input type="text" name="profissao" /></label>
     <h3>Rendimentos</h3>
-    <label>Entidade 1:<input type="text" name="renda1Entidade" value="" /></label>
-    <label>Valor 1:<input type="number" step="0.01" name="renda1Valor" value="" /></label>
-    <label>Entidade 2:<input type="text" name="renda2Entidade" value="" /></label>
-    <label>Valor 2:<input type="number" step="0.01" name="renda2Valor" value="" /></label>
-    <label>Entidade 3:<input type="text" name="renda3Entidade" value="" /></label>
-    <label>Valor 3:<input type="number" step="0.01" name="renda3Valor" value="" /></label>
+    <label>Fonte 1:<input type="text" name="fonte1" /></label>
+    <label>Valor 1:<input type="number" step="0.01" name="valor1" /></label>
+    <label>Fonte 2:<input type="text" name="fonte2" /></label>
+    <label>Valor 2:<input type="number" step="0.01" name="valor2" /></label>
+    <label>Fonte 3:<input type="text" name="fonte3" /></label>
+    <label>Valor 3:<input type="number" step="0.01" name="valor3" /></label>
 
     <button type="submit">Salvar</button>
-    <a href="/clientes">Voltar</a>
+    <button type="button" class="secondary" onclick="window.location='/clientes/'">Voltar</button>
 </form>
+<script>
+    document.getElementById('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const f = e.target;
+        const body = {
+            nome: f.nome.value, cpf: f.cpf.value, rg: f.rg.value,
+            endereco: f.endereco.value, profissao: f.profissao.value,
+            fonte1: f.fonte1.value, valor1: f.valor1.value ? +f.valor1.value : null,
+            fonte2: f.fonte2.value, valor2: f.valor2.value ? +f.valor2.value : null,
+            fonte3: f.fonte3.value, valor3: f.valor3.value ? +f.valor3.value : null
+        };
+        fetch('/clientes/', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) })
+            .then(res => {
+                if (res.ok) window.location.href = '/clientes/';
+                else res.text().then(t => { console.error('Erro ao salvar:', res.status, t); alert('Erro ao salvar: ' + res.status); });
+            });
+    });
+</script>
 </body>
 </html>

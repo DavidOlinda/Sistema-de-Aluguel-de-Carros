@@ -1,4 +1,4 @@
-# 🚗 Sistema de Gestão de Aluguel de Automóveis
+﻿# 🚗 Sistema de Gestão de Aluguel de Automóveis
 
 ## 📌 Descrição
 
@@ -131,16 +131,72 @@ Dependendo do contrato, o automóvel pode pertencer a:
 
 ---
 
-## 🛠️ Tecnologias (Sugestão)
+## 🛠️ Tecnologias Utilizadas
 
-* Backend:
-* Frontend: 
-* Banco de Dados: 
-* Modelagem: UML
+| Camada | Tecnologia |
+|---|---|
+| Linguagem | Java 21 |
+| Framework | Micronaut 4.10 |
+| Persistência | Micronaut Data + Hibernate ORM 6.6 |
+| Banco de Dados | SQLite 3.45 |
+| Templates | Thymeleaf |
+| Build | Maven 3 |
 
 ---
 
-## 📌 Autor
+## ▶️ Como Executar
 
-David Olinda Pomine 
-Jonas 
+**Pré-requisito:** Java 21 e Maven instalados.
+
+```bash
+mvn mn:run
+```
+
+Acesse: [http://localhost:8080/clientes/](http://localhost:8080/clientes/)
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+src/main/java/br/com/sistemaaluguel/
+├── ClienteApplication.java         # Ponto de entrada
+├── controller/
+│   ├── ClienteController.java      # Rotas HTTP (GET/POST/PUT/DELETE)
+│   └── ClienteForm.java            # DTO com validação (@NotBlank)
+├── domain/
+│   ├── Cliente.java                # Entidade JPA
+│   └── Rendimento.java             # Entidade JPA (fonte + valor)
+└── repository/
+    ├── ClienteRepository.java
+    └── RendimentoRepository.java
+
+src/main/resources/
+├── application.properties          # Configuração da aplicação
+└── templates/clientes/
+    ├── index.html                  # Listagem + busca
+    ├── create.html                 # Cadastro
+    ├── edit.html                   # Edição
+    └── show.html                   # Detalhes
+```
+
+---
+
+## 🌐 Rotas Disponíveis (Módulo Cliente)
+
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | `/clientes/` | Lista clientes (com busca por nome) |
+| GET | `/clientes/create` | Formulário de cadastro |
+| POST | `/clientes/` | Salva novo cliente (JSON) |
+| GET | `/clientes/{id}` | Exibe detalhes do cliente |
+| GET | `/clientes/{id}/edit` | Formulário de edição |
+| PUT | `/clientes/{id}` | Atualiza cliente (JSON) |
+| DELETE | `/clientes/{id}` | Remove cliente |
+
+---
+
+## Autores
+
+- David Olinda Pomine
+- Jonas Martins

@@ -8,36 +8,40 @@
         dl { max-width: 700px; }
         dt { font-weight: bold; margin-top: 10px; }
         dd { margin-left: 0; margin-bottom: 10px; }
-        a { display: inline-block; margin-top: 16px; padding: 8px 12px; background: #6c757d; color: white; text-decoration: none; border-radius: 3px; }
+        table { border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        button { display: inline-block; margin-top: 16px; padding: 8px 12px; background: #6c757d; color: white; border: none; border-radius: 3px; cursor: pointer; }
     </style>
 </head>
 <body>
 <h1>Cliente</h1>
 <dl>
     <dt>Nome</dt>
-    <dd th:text="${cliente.nome}">Nome</dd>
+    <dd th:text="${cliente.nome}"></dd>
     <dt>CPF</dt>
-    <dd th:text="${cliente.cpf}">CPF</dd>
+    <dd th:text="${cliente.cpf}"></dd>
     <dt>RG</dt>
-    <dd th:text="${cliente.rg}">RG</dd>
+    <dd th:text="${cliente.rg}"></dd>
     <dt>Endereço</dt>
-    <dd th:text="${cliente.endereco}">Endereço</dd>
+    <dd th:text="${cliente.endereco}"></dd>
     <dt>Profissão</dt>
-    <dd th:text="${cliente.profissao}">Profissão</dd>
-    <dt>Entidade 1</dt>
-    <dd th:text="${cliente.renda1Entidade}">Entidade 1</dd>
-    <dt>Valor 1</dt>
-    <dd th:text="${cliente.renda1Valor}">Valor 1</dd>
-    <dt>Entidade 2</dt>
-    <dd th:text="${cliente.renda2Entidade}">Entidade 2</dd>
-    <dt>Valor 2</dt>
-    <dd th:text="${cliente.renda2Valor}">Valor 2</dd>
-    <dt>Entidade 3</dt>
-    <dd th:text="${cliente.renda3Entidade}">Entidade 3</dd>
-    <dt>Valor 3</dt>
-    <dd th:text="${cliente.renda3Valor}">Valor 3</dd>
+    <dd th:text="${cliente.profissao}"></dd>
 </dl>
 
-<a href="/clientes">Voltar</a>
+<h3>Rendimentos</h3>
+<p th:if="${#lists.isEmpty(cliente.rendimentos)}">Nenhum rendimento cadastrado.</p>
+<table th:if="${!#lists.isEmpty(cliente.rendimentos)}">
+    <thead>
+        <tr><th>Fonte</th><th>Valor</th></tr>
+    </thead>
+    <tbody>
+        <tr th:each="r : ${cliente.rendimentos}">
+            <td th:text="${r.fonte}"></td>
+            <td th:text="${r.valor}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<button onclick="window.location='/clientes/'">Voltar</button>
 </body>
 </html>

@@ -1,33 +1,28 @@
 package br.com.sistemaaluguel.domain;
 
-import io.micronaut.data.annotation.*;
-import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
+import io.micronaut.core.annotation.Introspected;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@MappedEntity("clientes")
+@Entity
+@Table(name = "clientes")
+@Introspected
 public class Cliente {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String nome;
-
-    @NotBlank
     private String cpf;
-
-    @NotBlank
     private String rg;
-
     private String endereco;
     private String profissao;
 
-    private BigDecimal renda1Valor;
-    private BigDecimal renda2Valor;
-    private BigDecimal renda3Valor;
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    private List<Rendimento> rendimentos = new ArrayList<>();
 
-    // getters e setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -46,12 +41,6 @@ public class Cliente {
     public String getProfissao() { return profissao; }
     public void setProfissao(String profissao) { this.profissao = profissao; }
 
-    public BigDecimal getRenda1Valor() { return renda1Valor; }
-    public void setRenda1Valor(BigDecimal renda1Valor) { this.renda1Valor = renda1Valor; }
-
-    public BigDecimal getRenda2Valor() { return renda2Valor; }
-    public void setRenda2Valor(BigDecimal renda2Valor) { this.renda2Valor = renda2Valor; }
-
-    public BigDecimal getRenda3Valor() { return renda3Valor; }
-    public void setRenda3Valor(BigDecimal renda3Valor) { this.renda3Valor = renda3Valor; }
+    public List<Rendimento> getRendimentos() { return rendimentos; }
+    public void setRendimentos(List<Rendimento> rendimentos) { this.rendimentos = rendimentos; }
 }

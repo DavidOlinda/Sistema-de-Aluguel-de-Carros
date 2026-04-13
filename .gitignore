@@ -45,6 +45,9 @@ Thumbs.db
 .env.local
 *.pid
 
+# SQLite database (gerado em runtime)
+*.db
+
 # Node (se houver frontend)
 node_modules/
 npm-debug.log*

@@ -7,30 +7,49 @@
         body { font-family: Arial, sans-serif; margin: 20px; }
         label { display: block; margin-top: 10px; }
         input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
-        button, a { margin-top: 16px; display: inline-block; padding: 8px 12px; text-decoration: none; color: white; border-radius: 3px; }
-        button { background: #007bff; border: none; }
-        a { background: #6c757d; }
+        button { margin-top: 16px; display: inline-block; padding: 8px 12px; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button[type=submit] { background: #007bff; }
+        button.secondary { background: #6c757d; }
     </style>
 </head>
 <body>
 <h1>Editar Cliente</h1>
 
-<form th:action="@{/clientes/{id}(id=${cliente.id})}" method="post">
+<form id="form">
     <label>Nome:<input type="text" name="nome" th:value="${cliente.nome}" required /></label>
     <label>CPF:<input type="text" name="cpf" th:value="${cliente.cpf}" required /></label>
     <label>RG:<input type="text" name="rg" th:value="${cliente.rg}" required /></label>
-    <label>Endereço:<input type="text" name="endereco" th:value="${cliente.endereco}" required /></label>
+    <label>Endereço:<input type="text" name="endereco" th:value="${cliente.endereco}" /></label>
     <label>Profissão:<input type="text" name="profissao" th:value="${cliente.profissao}" /></label>
     <h3>Rendimentos</h3>
-    <label>Entidade 1:<input type="text" name="renda1Entidade" th:value="${cliente.renda1Entidade}" /></label>
-    <label>Valor 1:<input type="number" step="0.01" name="renda1Valor" th:value="${cliente.renda1Valor}" /></label>
-    <label>Entidade 2:<input type="text" name="renda2Entidade" th:value="${cliente.renda2Entidade}" /></label>
-    <label>Valor 2:<input type="number" step="0.01" name="renda2Valor" th:value="${cliente.renda2Valor}" /></label>
-    <label>Entidade 3:<input type="text" name="renda3Entidade" th:value="${cliente.renda3Entidade}" /></label>
-    <label>Valor 3:<input type="number" step="0.01" name="renda3Valor" th:value="${cliente.renda3Valor}" /></label>
+    <label>Fonte 1:<input type="text" name="fonte1" th:value="${fonte1}" /></label>
+    <label>Valor 1:<input type="number" step="0.01" name="valor1" th:value="${valor1}" /></label>
+    <label>Fonte 2:<input type="text" name="fonte2" th:value="${fonte2}" /></label>
+    <label>Valor 2:<input type="number" step="0.01" name="valor2" th:value="${valor2}" /></label>
+    <label>Fonte 3:<input type="text" name="fonte3" th:value="${fonte3}" /></label>
+    <label>Valor 3:<input type="number" step="0.01" name="valor3" th:value="${valor3}" /></label>
 
     <button type="submit">Atualizar</button>
-    <a href="/clientes">Voltar</a>
+    <button type="button" class="secondary" onclick="window.location='/clientes/'">Voltar</button>
 </form>
+<script th:inline="javascript">
+    const clienteId = [[${cliente.id}]];
+    document.getElementById('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const f = e.target;
+        const body = {
+            nome: f.nome.value, cpf: f.cpf.value, rg: f.rg.value,
+            endereco: f.endereco.value, profissao: f.profissao.value,
+            fonte1: f.fonte1.value, valor1: f.valor1.value ? +f.valor1.value : null,
+            fonte2: f.fonte2.value, valor2: f.valor2.value ? +f.valor2.value : null,
+            fonte3: f.fonte3.value, valor3: f.valor3.value ? +f.valor3.value : null
+        };
+        fetch('/clientes/' + clienteId, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) })
+            .then(res => {
+                if (res.ok) window.location.href = '/clientes/';
+                else res.text().then(t => { console.error('Erro ao atualizar:', res.status, t); alert('Erro ao atualizar: ' + res.status); });
+            });
+    });
+</script>
 </body>
 </html>

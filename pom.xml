@@ -11,18 +11,19 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>17</java.version>
-        <micronaut.version>4.4.7</micronaut.version>
-        <micronaut.test.resources.version>2.0.0</micronaut.test.resources.version>
+        <java.version>21</java.version>
+        <micronaut.platform.version>4.10.10</micronaut.platform.version>
+        <micronaut.core.version>4.10.20</micronaut.core.version>
+        <micronaut.data.version>4.14.3</micronaut.data.version>
+        <micronaut.test.resources.version>3.0.0</micronaut.test.resources.version>
     </properties>
 
-    <!-- ✅ BOM CORRETO -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>io.micronaut.platform</groupId>
                 <artifactId>micronaut-platform</artifactId>
-                <version>${micronaut.version}</version>
+                <version>${micronaut.platform.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -68,11 +69,11 @@
             <version>3.45.2.0</version>
         </dependency>
 
-        <!-- Dialect SQLite -->
+        <!-- Dialect SQLite para Hibernate -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-community-dialects</artifactId>
-            <version>6.2.7.Final</version>
+            <version>6.6.32.Final</version>
         </dependency>
 
         <!-- Views -->
@@ -81,17 +82,18 @@
             <artifactId>micronaut-views-thymeleaf</artifactId>
         </dependency>
 
-        <!-- Validation -->
+        <!-- Validação -->
         <dependency>
             <groupId>io.micronaut.validation</groupId>
             <artifactId>micronaut-validation</artifactId>
         </dependency>
 
-        <!-- Annotation Processor -->
+        <!-- Logging (Java Util Logging, embutido no Java) -->
         <dependency>
-            <groupId>io.micronaut</groupId>
-            <artifactId>micronaut-inject-java</artifactId>
-            <scope>provided</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>2.0.16</version>
+            <scope>runtime</scope>
         </dependency>
 
     </dependencies>
@@ -99,42 +101,79 @@
     <build>
         <plugins>
 
-            <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.14.1</version>
                 <configuration>
                     <release>${java.version}</release>
-
                     <annotationProcessorPaths>
                         <path>
                             <groupId>io.micronaut</groupId>
                             <artifactId>micronaut-inject-java</artifactId>
-                            <version>${micronaut.version}</version>
+                            <version>${micronaut.core.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.micronaut.validation</groupId>
+                            <artifactId>micronaut-validation-processor</artifactId>
+                            <version>4.12.0</version>
                         </path>
                         <path>
                             <groupId>io.micronaut.data</groupId>
                             <artifactId>micronaut-data-processor</artifactId>
-                            <version>${micronaut.version}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-http-validation</artifactId>
-                            <version>${micronaut.version}</version>
+                            <version>${micronaut.data.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
-            <!-- Plugin Micronaut -->
             <plugin>
                 <groupId>io.micronaut.maven</groupId>
                 <artifactId>micronaut-maven-plugin</artifactId>
-                <version>${micronaut.version}</version>
+                <version>4.11.6</version>
                 <configuration>
                     <mainClass>br.com.sistemaaluguel.ClienteApplication</mainClass>
+                    <testResourcesEnabled>false</testResourcesEnabled>
+                    <testResourcesVersion>${micronaut.test.resources.version}</testResourcesVersion>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.14.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>br.com.sistemaaluguel.ClienteApplication</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/micronaut/io.micronaut.inject.BeanDefinitionReference</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/micronaut/io.micronaut.core.beans.BeanIntrospectionReference</resource>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
